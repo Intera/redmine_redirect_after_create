@@ -5,25 +5,29 @@ module RedmineRedirectAfterCreate
 
     def self.included(base) # :nodoc:
 
+      base.send(:include, InstanceMethods)
+
       # Same as typing in the class
       base.class_eval do
-
         unloadable # Send unloadable so it will not be unloaded in development
+        alias_method_chain :_project_issues_path, :redirect_url
+      end
 
-        def _project_issues_path_with_redirect_url(project, *args)
+    end
 
-          if params[:redirect_url]
-            options = args.extract_options!
-            options = options.reverse_merge(redirect_url: params[:redirect_url])
-            args << options
-          end
+    module InstanceMethods
 
-          # noinspection RubyResolve
-          _project_issues_path_without_redirect_url(project, *args)
+      def _project_issues_path_with_redirect_url(project, *args)
 
+        if params[:redirect_url]
+          options = args.extract_options!
+          options = options.reverse_merge(redirect_url: params[:redirect_url])
+          args << options
         end
 
-        alias_method_chain :_project_issues_path, :redirect_url
+        # noinspection RubyResolve
+        _project_issues_path_without_redirect_url(project, *args)
+
       end
 
     end
