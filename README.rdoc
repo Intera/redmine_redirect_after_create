@@ -6,6 +6,6 @@ You can use it by appending the redirect_url parameter the the URL for creating 
 
 For example:
 
-http://my-redmine-url.tld/projects/myprojects/issues/new?redirect_url=/
+http://my-redmine-url.tld/projects/myprojects/issues/new?redirect_url=%2F
 
 This URL will redirect the user to the homepage after the ticket was created.
